@@ -12,7 +12,7 @@ import {
 } from "@/lib/admin.functions";
 import { formatPrice, SHOP } from "@/lib/barbershop";
 
-export const Route = createFileRoute("/admin/painel")({
+export const Route = createFileRoute("/admin_/painel")({
   head: () => ({ meta: [{ title: "Painel — Nonato Barbearia" }] }),
   component: AdminDashboard,
 });

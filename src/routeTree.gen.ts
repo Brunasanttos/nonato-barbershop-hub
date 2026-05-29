@@ -13,7 +13,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AgendamentoRouteImport } from './routes/agendamento'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminPainelRouteImport } from './routes/admin.painel'
+import { Route as AdminPainelRouteImport } from './routes/admin_.painel'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -36,21 +36,21 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminPainelRoute = AdminPainelRouteImport.update({
-  id: '/painel',
-  path: '/painel',
-  getParentRoute: () => AdminRoute,
+  id: '/admin_/painel',
+  path: '/admin/painel',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminRoute
   '/agendamento': typeof AgendamentoRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/painel': typeof AdminPainelRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminRoute
   '/agendamento': typeof AgendamentoRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/painel': typeof AdminPainelRoute
@@ -58,10 +58,10 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminRoute
   '/agendamento': typeof AgendamentoRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/admin/painel': typeof AdminPainelRoute
+  '/admin_/painel': typeof AdminPainelRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -74,14 +74,15 @@ export interface FileRouteTypes {
     | '/admin'
     | '/agendamento'
     | '/sitemap.xml'
-    | '/admin/painel'
+    | '/admin_/painel'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRouteWithChildren
+  AdminRoute: typeof AdminRoute
   AgendamentoRoute: typeof AgendamentoRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  AdminPainelRoute: typeof AdminPainelRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -114,31 +115,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/painel': {
-      id: '/admin/painel'
-      path: '/painel'
+    '/admin_/painel': {
+      id: '/admin_/painel'
+      path: '/admin/painel'
       fullPath: '/admin/painel'
       preLoaderRoute: typeof AdminPainelRouteImport
-      parentRoute: typeof AdminRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface AdminRouteChildren {
-  AdminPainelRoute: typeof AdminPainelRoute
-}
-
-const AdminRouteChildren: AdminRouteChildren = {
-  AdminPainelRoute: AdminPainelRoute,
-}
-
-const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRouteWithChildren,
+  AdminRoute: AdminRoute,
   AgendamentoRoute: AgendamentoRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  AdminPainelRoute: AdminPainelRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
